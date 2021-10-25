@@ -1,0 +1,38 @@
+version: '3.9'
+services:
+
+  webapp:
+      container_name: login-webapp
+      image: login-webapp
+      build:
+        context: .
+        dockerfile: Dockerfile
+      ports:
+        - "8080:8080"
+      networks:
+        - mynet
+      volumes:
+        - ./logs:/usr/local/tomcat/logs
+      restart: on-failure
+      depends_on: 
+        - postgres
+
+  postgres:
+      container_name: postgres_db
+      image: postgres:11-alpine
+      ports: 
+        - "5432:5432"
+      networks:
+        - mynet
+      volumes:
+        - ./init-database.sh:/docker-entrypoint-initdb.d/initdb.sh
+      environment:
+        POSTGRES_PASSWORD: "Admin@777"
+        POSTGRES_DB: "mydb"
+        PGPORT: "5432"
+        POSTGRES_USER: "Admin"
+      restart: "on-failure"
+
+networks:
+  mynet:
+    driver: bridge
