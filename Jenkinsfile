@@ -1,4 +1,4 @@
-def CONTAINER_NAME = 'loginAppTomcat'
+def CONTAINER_NAME = 'loginapptomcat'
 def CONTAINER_TAG = 'latest'
 def DOCKER_HUB_USER = '25795'
 
@@ -53,7 +53,7 @@ pipeline {
 
 def imagePrune(containerName) {
     try {
-    sh "docker image prune -f"
+    sh "sudo docker image prune -f"
     sh "docker stop $containerName"
     }
     catch(error) {}
